@@ -1,0 +1,21 @@
+
+# kill all dashboard processes, as the deactivate script doens't work
+kill $(ps aux | grep IssuanceDashboard | grep java | awk '{print $2}')
+
+# grep for term, then grep over those files with a new search term
+grep monitoring `grep experiment * | awk '{print $1}' | sed 's/.$//'`
+
+# grep for value
+grep -o "URLConfigurationConsistency:hasOffering=[0-9]" *
+
+# service_log all entries with latency above 100ms
+zcat service_log.2015-11-23-05.cobrand-cc-na-front-1a-2-i-b61eb706.us-east-1.amazon.com.gz | perl -e '$/="EOE"; while (<>) { print if /GenerateAdvertisement:VC/m && /A2EUQ1WTGCTBG2/m && /^Time=[1-9][0-9][0-9]+/m}'
+
+# all request_ids from the spc placement
+cat service_log.2016-12-02-18 | perl -e '$/="EOE"; while (<>) { print if /GenerateAdvertisement:SPC/m}' | grep -oP "RequestId=(.*)" | sed -e "s/^RequestId=//" > /tmp/kevquinn_spc2
+
+# lines greater than
+grep -c '.\{17\}' 
+
+# find all python files, then grep over them
+find . -name '*.py' -print0 | xargs -0 grep 'something' > output.txt

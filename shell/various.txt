@@ -1,0 +1,45 @@
+
+# create directories from file
+1. ls > dirs.txt, 2. while read FILE; do mkdir "${FILE}"; done < dirs.txt
+
+# get column of tsv file
+cat file.tsv | awk -F "\t" '{print $2}'
+
+# print largest values for specific column (24th column here)
+sort -nrk24,1 filename | head -1 | cut -d ' ' -f3
+
+# get column of tsv file where value is 1 (with line number)
+cat file.tsv | awk -F "\t" '{print $2}' | grep -n 1
+
+# get column and format decimal precision
+cat PROCESSED_DATASET_FILE-1 | awk -F "\t" '{printf "%-7.4f\t%d\n",$9,$19}'
+
+# sum a file
+awk '{ total += $1; count++ } END { print total/count }' ~/counts
+
+# sum a column in a file
+cat ~/Downloads/data_0008_part_00 | awk -F "," '{s+=$6} END {print s}'
+
+# read specific line
+sed -n '15010,15020p' input.txt
+
+# print all of the directories and their branches
+for D in `ls`; do echo -n "$D ("; cd $D; echo -n `git rev-parse --abbrev-ref HEAD`;echo ") ";cd ..; done
+
+# remove all unused packages
+yes | head -999 | brazil vs --removeunusedpackages --versionset IssuanceModelingSimulator/mainline
+
+# largest files/folders
+du -a /home | sort -n -r | head -n 5
+
+# remove files except for specified list (train1 is the folder, keep is the file with white list)
+find train1 -type f -print0 | grep -vzZ -f keep | xargs -0 rm
+
+# remove ^M carriage return in * mac *
+tr '\r' '\n' < /tmp/hybrid_agg_us_new.txt > out
+
+# size of current directory
+du -sh file_path
+
+# find service calls that were slower than 500 ms
+cat <your service log here> | perl -e '$/="EOE"; while (<>) {print if /Operation=generateAdvertisement.*^Time=(\d+)/ms && ($1 > 500)}'
